@@ -1,0 +1,159 @@
+swagger: '2.0'
+info:
+  title: WebShop API
+  description: WebShop of VIS-Lab
+  version: "1.0.0"
+# the domain of the service
+host: localhoast
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /v1
+paths:
+  
+  /products/{id}:
+    get:
+      summary: Product
+      description: |
+        A Product of the shop
+      parameters:
+        - name: id
+          in: path
+          description: ID of Product.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: A product
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+    post:
+      description: |
+        Altering product
+      parameters:
+        - name: id
+          in: path
+          description: ID of Product.
+          required: true
+          type: integer
+          format: int32
+        - name: delete
+          in: query
+          description: Delete product.
+          required: false
+          type: integer
+          format: boolean
+      responses:
+        200:
+          description: product deleted
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      
+  /addProduct:
+      post:
+        summary: Add a new product
+        description: ""
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: product
+            description: Product that will be added
+            required: false
+            schema:
+              $ref: "#/definitions/Product"
+        responses:
+          "200":
+            description: sucess
+          "500":
+            description: failed
+  /products:
+    get:
+      summary: List of Products
+      description: |
+        List of all Products from the webshop
+      parameters:
+        - name: searchstring
+          in: query
+          description: Searches for all products with the given string contained in the product descrption.
+          required: false
+          type: string
+        - name: searchmin
+          in: query
+          description: Searches for all products which are more expencive than given value.
+          required: false
+          type: integer
+          format: int32
+        - name: searchmax
+          in: query
+          description: Searches for all products which are less expencive than given value.
+          required: false
+          type: integer
+          format: int32
+        - name: name
+          in: query
+          description: Lists all products with this name.
+          required: false
+          type: string
+      responses:
+        200:
+          description: A product
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Products'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of product.
+      price:
+        type: number
+        description: Price of product.
+      category:
+        type: integer
+        description: Id of category.
+      details:
+        type: string
+        description: Detail description of product.
+  Products:
+    type: array
+    description: Array of Products
+    items: 
+      $ref: "#/definitions/Product"
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
