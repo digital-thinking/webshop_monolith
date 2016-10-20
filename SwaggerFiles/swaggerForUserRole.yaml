@@ -1,0 +1,151 @@
+swagger: '2.0'
+info:
+  title: WebShop API
+  description: WebShop of VIS-Lab
+  version: "1.0.0"
+# the domain of the service
+host: localhoast
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /v1
+paths:
+  /users/{username}:
+    get:
+      summary: User
+      description: |
+        A User of the shop
+      parameters:
+        - name: username
+          in: path
+          description: The username of the user
+          required: true
+          type: string
+      responses:
+        200:
+          description: A user
+          schema:
+            type: object
+            items:
+              $ref: "#/definitions/User"
+        500:
+          description: User doesn't exist
+          schema:
+            $ref: "#/definitions/Error"
+  
+  /registerUser:
+      post:
+        summary: Register a new user
+        description: "Registers a new user with the given information"
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: user
+            description: The user that will be added
+            required: false
+            schema:
+              $ref: "#/definitions/User"
+        responses:
+          "200":
+            description: User registered
+          "500":
+            description: Unexpected Error
+            schema:
+              $ref: "#/definitions/Error"
+                
+
+  /deleteUser/{id}:
+    post:
+      description: |
+        Delete a user by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of User.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: User deleted
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/User'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+  /roles/{rolelevel}:
+    get:
+      summary: Role
+      description: |
+        A Role of the shop
+      parameters:
+        - name: rolelevel
+          in: path
+          description: The level of the role
+          required: true
+          type: integer
+      responses:
+        200:
+          description: A role
+          schema:
+            type: object
+            items:
+              $ref: "#/definitions/Role"
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/Error"            
+
+ 
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: A unique identifier
+      username:
+        type: string
+        description: The user's username
+      name:
+        type: string
+        description: The user's firstname
+      lastname:
+        type: string
+        description: The user's lastname
+      password:
+        type: string
+        description: The user's password
+      role:
+        type: integer
+        description: The ID of a role
+  Role:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: A unique identifier
+      typ:
+        type: string
+        description: The type of the role
+      level:
+        type: integer
+        description: The role's level
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
