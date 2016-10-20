@@ -1,0 +1,128 @@
+swagger: '2.0'
+info:
+  title: WebShop API
+  description: WebShop of VIS-Lab
+  version: "1.0.0"
+# the domain of the service
+host: localhoast
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /v1
+paths:
+  
+  /categories/{id}:
+    get:
+      summary: Category
+      description: |
+        A Category of the shop
+      parameters:
+        - name: id
+          in: path
+          description: ID of Category.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: A category
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Category'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+    post:
+      description: |
+        Update Category
+      parameters:
+        - name: id
+          in: path
+          description: ID of Category.
+          required: true
+          type: integer
+          format: int32
+        - name: delete
+          in: query
+          description: Delete Category.
+          required: false
+          type: integer
+          format: boolean
+      responses:
+        200:
+          description: Category deleted
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Category'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      
+  /addCategory:
+      post:
+        summary: Add a new Category
+        description: ""
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: category
+            description: Category that will be added
+            required: false
+            schema:
+              $ref: "#/definitions/Category"
+        responses:
+          "200":
+            description: sucess
+          "500":
+            description: failed
+  /categories:
+    get:
+      summary: List of Categories
+      description: |
+        List of all Categories from the webshop
+      parameters:
+        - name: name
+          in: query
+          description: Searches for all products with the given name.
+          required: false
+          type: string
+      responses:
+        200:
+          description: A Category
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of product.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
