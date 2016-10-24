@@ -59,7 +59,7 @@ paths:
                 
 
   /deleteUser/{id}:
-    post:
+    delete:
       description: |
         Delete a user by ID
       parameters:
