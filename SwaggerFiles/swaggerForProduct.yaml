@@ -11,7 +11,7 @@ schemes:
 # will be prefixed to all paths
 basePath: /v1
 paths:
-  
+
   /products/{id}:
     get:
       summary: Product
@@ -35,8 +35,8 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-            
-    post:
+
+    delete:
       description: |
         Altering product
       parameters:
@@ -46,12 +46,6 @@ paths:
           required: true
           type: integer
           format: int32
-        - name: delete
-          in: query
-          description: Delete product.
-          required: false
-          type: integer
-          format: boolean
       responses:
         200:
           description: product deleted
@@ -63,7 +57,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-      
+
   /addProduct:
       post:
         summary: Add a new product
@@ -145,7 +139,7 @@ definitions:
   Products:
     type: array
     description: Array of Products
-    items: 
+    items:
       $ref: "#/definitions/Product"
   Error:
     type: object
