@@ -1,4 +1,5 @@
-# webshop_microservices
+# webshop_monolith
+basic struts 2, jsp, hibernate application 
 
 ## Prepare windows
 1. Install Xampp
